@@ -25,10 +25,15 @@ public class SearchController {
     // Process search request and display results
     @RequestMapping(value = "results")
     public String search(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
-        ArrayList<HashMap<String, String>> jobs = JobData.findByColumnAndValue(searchType, searchTerm);
-        model.addAttribute("jobs", jobs);
-        model.addAttribute("columns", ListController.columnChoices);
-        return "search";
+        ArrayList<HashMap<String, String>> jobs;
+        if(searchType.equals("all")){
+            jobs = JobData.findByValue(searchTerm);
+        } else {
+            jobs = JobData.findByColumnAndValue(searchType, searchTerm);
+        }
+            model.addAttribute("jobs", jobs);
+            model.addAttribute("columns", ListController.columnChoices);
+            return "search";
     }
 
 }
